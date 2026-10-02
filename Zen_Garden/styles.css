@@ -1,0 +1,794 @@
+:root {
+  /* COLOR SYSTEM
+     Keep the palette deliberately quiet: the depth comes from layered greens,
+     while warm paper and pale sage preserve contrast and breathing room. */
+  color-scheme: dark;
+  --green-950: #101b16;
+  --green-900: #17271f;
+  --green-850: #1c3025;
+  --green-800: #23392d;
+  --green-700: #35513f;
+  --green-600: #526d56;
+  --moss: #788568;
+  --fern: #94a184;
+  --sage: #b8c0a9;
+  --eucalyptus: #d3d8c8;
+  --cream: #f0eee3;
+  --paper: #e6e5d9;
+  --stone: #c9c6b7;
+  --earth: #a18162;
+  --sunlight: #d6c184;
+  --sunlight-pale: #eee2b8;
+  --ink: #202920;
+  --muted-ink: #536052;
+  --line: rgba(34, 55, 41, 0.17);
+  --line-on-dark: rgba(238, 239, 222, 0.19);
+
+  /* Shadows and layout tokens make the theme easier to tune consistently. */
+  --shadow-soft: 0 18px 48px rgba(19, 32, 23, 0.09);
+  --shadow-deep: 0 28px 70px rgba(5, 15, 10, 0.28);
+  --radius-card: 1.15rem;
+  --radius-organic: 3.25rem 0.8rem 3.25rem 0.8rem;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 5rem;
+  --content-width: 76rem;
+  --ease-garden: cubic-bezier(0.22, 0.7, 0.25, 1);
+  --transition-gentle: 260ms var(--ease-garden);
+}
+
+/* RESET AND BASE STYLES
+   A small predictable reset avoids browser-default margins breaking the grid.
+   `min-width: 0` on layout children below also prevents long words from
+   forcing a wider-than-viewport page. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    radial-gradient(ellipse at 10% 27%, rgba(142, 157, 123, 0.17), transparent 28rem),
+    radial-gradient(ellipse at 88% 69%, rgba(107, 129, 99, 0.12), transparent 34rem),
+    var(--cream);
+  color: var(--ink);
+  font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  color: var(--cream);
+  background: var(--green-700);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* TYPOGRAPHY
+   A system serif gives headings an editorial, contemplative character without
+   loading a remote font or adding a runtime dependency. */
+h1,
+h2,
+h3 {
+  margin: 0;
+  color: inherit;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+h1 {
+  max-width: 10ch;
+  font-size: clamp(4rem, 9.2vw, 8.5rem);
+}
+
+h2 {
+  margin-top: 0.75rem;
+  font-size: clamp(1.5rem, 2.8vw, 2.35rem);
+}
+
+h3 {
+  margin-bottom: 1rem;
+  font-size: clamp(1.65rem, 2.5vw, 2.35rem);
+}
+
+p {
+  max-width: 70ch;
+  margin: 0 0 1.1rem;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+abbr[title] {
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+  cursor: help;
+}
+
+/* LAYOUT
+   The existing page wrapper becomes a two-column editorial composition.
+   The main story stays broad and calm; the sidebar is a separate garden path. */
+.page-wrapper {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 20rem);
+  grid-template-areas:
+    "intro sidebar"
+    "support sidebar";
+  gap: clamp(2rem, 5vw, 5rem);
+  width: min(var(--content-width), calc(100% - 3rem));
+  margin-inline: auto;
+  padding: 2rem 0 6rem;
+}
+
+.intro,
+.supporting,
+.sidebar {
+  min-width: 0;
+}
+
+.intro {
+  grid-area: intro;
+}
+
+.supporting {
+  grid-area: support;
+}
+
+/* HERO
+   The header is intentionally oversized and atmospheric, like a clearing
+   opening in a forest. A translucent pine overlay tints the garden photograph
+   without hiding it; pseudo-elements add sunlight and foliage without markup. */
+.intro > header {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: clamp(31rem, 61vw, 46rem);
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+  padding: clamp(2rem, 7vw, 6.5rem);
+  border: 1px solid rgba(232, 234, 214, 0.17);
+  border-radius: var(--radius-organic);
+  background:
+    radial-gradient(ellipse at 68% 22%, rgba(216, 222, 178, 0.2), transparent 18rem),
+    radial-gradient(ellipse at 94% 96%, rgba(119, 144, 92, 0.28), transparent 27rem),
+    linear-gradient(138deg, rgba(38, 61, 46, 0.82) 0%, rgba(26, 48, 36, 0.74) 42%, rgba(16, 27, 22, 0.83) 100%),
+    url("images/garden.jpeg") center 55% / cover no-repeat;
+  background-color: var(--green-950);
+  color: var(--cream);
+  box-shadow: var(--shadow-deep);
+}
+
+/* Light shafts, blurred foliage, and fine grain-like rings stay on separate
+   layers. They are non-interactive decoration and never obscure text. */
+.intro > header::before {
+  position: absolute;
+  z-index: -1;
+  inset: -22%;
+  content: "";
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 82% 24%, rgba(238, 221, 163, 0.3), transparent 11%),
+    linear-gradient(118deg, transparent 43%, rgba(221, 203, 144, 0.1) 48%, transparent 57%),
+    radial-gradient(ellipse at 76% 68%, transparent 0 20%, rgba(208, 215, 181, 0.08) 20.2% 20.5%, transparent 20.8% 30%, rgba(208, 215, 181, 0.055) 30.2% 30.5%, transparent 30.8%);
+  transform: rotate(-8deg);
+  animation: sunlight-breathe 24s ease-in-out infinite;
+}
+
+.intro > header::after {
+  position: absolute;
+  z-index: -1;
+  top: 10%;
+  right: 4%;
+  width: clamp(11rem, 27vw, 24rem);
+  aspect-ratio: 0.68;
+  border: 1px solid rgba(219, 224, 189, 0.14);
+  border-radius: 100% 0 100% 0;
+  content: "";
+  pointer-events: none;
+  background:
+    linear-gradient(65deg, transparent 49.5%, rgba(219, 224, 189, 0.15) 49.8% 50.2%, transparent 50.5%),
+    repeating-linear-gradient(105deg, transparent 0 2.2rem, rgba(219, 224, 189, 0.09) 2.25rem 2.3rem, transparent 2.35rem 3.5rem);
+  opacity: 0.72;
+  transform: rotate(35deg);
+  transform-origin: center;
+}
+
+.intro > header h1 {
+  position: relative;
+  max-width: 8ch;
+  color: var(--cream);
+  font-size: clamp(4.25rem, 10vw, 9.5rem);
+  line-height: 0.86;
+}
+
+.intro > header h2 {
+  max-width: 17ch;
+  margin-top: 1.7rem;
+  color: #d2d8c6;
+  font-size: clamp(1.25rem, 2.4vw, 2rem);
+  letter-spacing: 0.015em;
+  line-height: 1.3;
+}
+
+.intro > header h2 abbr {
+  color: var(--sunlight-pale);
+  text-shadow: 0 0 22px rgba(229, 208, 151, 0.2);
+}
+
+.summary {
+  position: relative;
+  z-index: 1;
+  width: min(85%, 43rem);
+  margin: -3rem 0 0 auto;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid rgba(232, 211, 155, 0.22);
+  border-radius: var(--radius-organic);
+  background: linear-gradient(130deg, rgba(42, 63, 47, 0.97), rgba(29, 47, 36, 0.97));
+  color: #e8e9da;
+  box-shadow: var(--shadow-deep);
+}
+
+.summary::before {
+  position: absolute;
+  top: 1.3rem;
+  right: 1.5rem;
+  width: 0.62rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--sunlight-pale);
+  box-shadow: 0 0 1.2rem rgba(238, 220, 163, 0.68);
+  content: "";
+  pointer-events: none;
+  animation: firefly-glow 7s ease-in-out infinite;
+}
+
+.summary p:first-child {
+  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  line-height: 1.55;
+}
+
+.summary p:last-child {
+  color: #c4ccb9;
+  font-size: 0.9rem;
+}
+
+.summary a {
+  color: var(--sunlight-pale);
+  text-decoration-color: rgba(238, 226, 184, 0.6);
+}
+
+.preamble {
+  position: relative;
+  margin: clamp(3.5rem, 8vw, 7rem) 0 clamp(3rem, 7vw, 5.5rem);
+  padding: clamp(2rem, 5vw, 4rem);
+  border: 1px solid rgba(48, 71, 53, 0.14);
+  border-radius: 0.6rem var(--radius-organic) 0.6rem var(--radius-organic);
+  background:
+    radial-gradient(ellipse at 100% 0, rgba(174, 185, 154, 0.34), transparent 21rem),
+    rgba(231, 232, 219, 0.9);
+  box-shadow: var(--shadow-soft);
+}
+
+.preamble::before {
+  display: block;
+  width: 3rem;
+  height: 1px;
+  margin-bottom: 1.6rem;
+  background: linear-gradient(90deg, var(--earth), var(--sunlight));
+  content: "";
+}
+
+.preamble h3,
+.supporting h3 {
+  color: var(--green-800);
+}
+
+.preamble p,
+.supporting p {
+  color: var(--muted-ink);
+}
+
+/* CONTENT SECTIONS
+   The sections alternate tones and silhouettes to suggest garden rooms,
+   while repeated spacing and type keep the long-form text easy to follow. */
+.supporting {
+  display: grid;
+  gap: clamp(1.25rem, 2.8vw, 2.2rem);
+}
+
+.supporting > div:not(.extra1):not(.extra2):not(.extra3):not(.extra4):not(.extra5):not(.extra6) {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.65rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: rgba(244, 243, 231, 0.84);
+  box-shadow: var(--shadow-soft);
+  transition: border-color 500ms ease, box-shadow 500ms ease;
+}
+
+.supporting > div:not(.extra1):not(.extra2):not(.extra3):not(.extra4):not(.extra5):not(.extra6):hover {
+  border-color: rgba(161, 129, 98, 0.34);
+  box-shadow: 0 22px 54px rgba(19, 32, 23, 0.12);
+}
+
+.supporting > div:nth-child(odd) {
+  border-radius: 0.7rem var(--radius-organic) 0.7rem var(--radius-organic);
+  background:
+    radial-gradient(ellipse at 98% 0%, rgba(170, 184, 148, 0.27), transparent 22rem),
+    rgba(230, 232, 217, 0.92);
+}
+
+.supporting > div:nth-child(even) {
+  margin-right: clamp(0rem, 4vw, 3rem);
+}
+
+.supporting > div:nth-child(odd) {
+  margin-left: clamp(0rem, 2vw, 1.5rem);
+}
+
+.supporting > div::after {
+  position: absolute;
+  right: -2.5rem;
+  bottom: -4rem;
+  width: 11rem;
+  height: 11rem;
+  border: 1px solid rgba(77, 105, 73, 0.1);
+  border-radius: 100% 0 100% 0;
+  content: "";
+  pointer-events: none;
+  transform: rotate(35deg);
+}
+
+.supporting footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid var(--line-on-dark);
+  border-radius: 0.7rem var(--radius-organic) 0.7rem var(--radius-organic);
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(121, 145, 100, 0.24), transparent 25rem),
+    var(--green-900);
+  box-shadow: var(--shadow-deep);
+}
+
+.supporting footer a {
+  display: inline-grid;
+  min-width: 3.5rem;
+  min-height: 3.5rem;
+  place-items: center;
+  border: 1px solid rgba(219, 225, 197, 0.22);
+  border-radius: 50%;
+  color: #e8eadc;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: color var(--transition-gentle), background var(--transition-gentle), transform var(--transition-gentle);
+}
+
+.supporting footer a:hover {
+  transform: translateY(-3px);
+  background: var(--green-700);
+  color: #fff;
+}
+
+/* SIDEBAR AND NAVIGATION
+   The existing resource lists become an evergreen panel. Grouped list items
+   get generous tap targets, and the leaf-shaped accent is purely decorative. */
+.sidebar {
+  grid-area: sidebar;
+  align-self: start;
+  position: sticky;
+  top: 1.5rem;
+}
+
+.sidebar .wrapper {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.35rem, 2.5vw, 2rem);
+  border: 1px solid rgba(237, 237, 218, 0.15);
+  border-radius: 0.7rem 2.8rem 0.7rem 2.8rem;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(115, 139, 93, 0.28), transparent 18rem),
+    linear-gradient(160deg, var(--green-800), var(--green-950) 78%);
+  color: #e9eadb;
+  box-shadow: var(--shadow-deep);
+}
+
+.sidebar .wrapper::before {
+  position: absolute;
+  top: 3rem;
+  right: -3rem;
+  width: 8rem;
+  height: 13rem;
+  border: 1px solid rgba(218, 224, 190, 0.12);
+  border-radius: 100% 0 100% 0;
+  content: "";
+  pointer-events: none;
+  transform: rotate(28deg);
+  animation: branch-sway 21s ease-in-out infinite;
+}
+
+.sidebar .wrapper > div {
+  position: relative;
+  z-index: 1;
+  padding: 0.25rem 0 1.6rem;
+}
+
+.sidebar .wrapper > div + div {
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--line-on-dark);
+}
+
+.sidebar h3 {
+  margin-bottom: 0.85rem;
+  color: var(--sunlight-pale);
+  font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.sidebar ul {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar li {
+  color: #c6cdbb;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.sidebar a {
+  color: inherit;
+  text-decoration: none;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.28em;
+  transition:
+    color var(--transition-gentle),
+    text-decoration-color var(--transition-gentle),
+    transform var(--transition-gentle);
+}
+
+.sidebar a:hover {
+  color: #f1e7c9;
+  text-decoration: underline;
+  text-decoration-color: rgba(226, 214, 177, 0.75);
+}
+
+.sidebar .design-selection li {
+  padding: 0.6rem 0.45rem;
+  border-bottom: 1px solid rgba(237, 237, 218, 0.08);
+  transition: background var(--transition-gentle), transform var(--transition-gentle);
+}
+
+.sidebar .design-selection li:hover {
+  transform: translateX(4px);
+  border-radius: 0.4rem;
+  background: rgba(228, 212, 158, 0.1);
+}
+
+.sidebar .design-name {
+  display: block;
+  color: #f0eddf;
+  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-size: 1.04rem;
+}
+
+.sidebar .design-selection li::marker {
+  color: var(--sunlight);
+}
+
+.sidebar .designer-name {
+  display: inline-block;
+  margin-top: 0.15rem;
+  color: #b9c3ad;
+  font-size: 0.77rem;
+}
+
+.sidebar .zen-resources li,
+.sidebar .design-archives li {
+  padding: 0.38rem 0;
+}
+
+.sidebar .zen-resources a,
+.sidebar .design-archives a {
+  display: inline-block;
+}
+
+.sidebar .zen-resources a::before,
+.sidebar .design-archives a::before {
+  display: inline-block;
+  width: 0;
+  height: 1px;
+  margin-right: 0;
+  vertical-align: middle;
+  background: var(--sunlight);
+  content: "";
+  transition: width var(--transition-gentle), margin-right var(--transition-gentle);
+}
+
+.sidebar .zen-resources a:hover::before,
+.sidebar .design-archives a:hover::before,
+.sidebar .zen-resources a:focus-visible::before,
+.sidebar .design-archives a:focus-visible::before {
+  width: 0.8rem;
+  margin-right: 0.45rem;
+}
+
+/* LINKS AND FOCUS
+   Main-content links are visibly underlined even before hover; keyboard users
+   receive an offset outline rather than relying on a subtle color shift. */
+.page-wrapper a:not(.sidebar a):not(.supporting footer a) {
+  text-decoration: underline;
+  text-decoration-color: rgba(119, 129, 89, 0.55);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color var(--transition-gentle), text-decoration-color var(--transition-gentle);
+}
+
+.page-wrapper a:not(.sidebar a):not(.supporting footer a):hover {
+  color: var(--green-700);
+  text-decoration-color: currentColor;
+}
+
+a:focus-visible {
+  outline: 3px solid #c39b67;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+/* BOTANICAL DECORATIONS
+   The historical extra divs remain untouched. Use a pair of pseudo-elements
+   as faint garden shapes instead of adding image assets or decorative markup. */
+.page-wrapper::before,
+.page-wrapper::after {
+  position: absolute;
+  z-index: -1;
+  width: clamp(8rem, 20vw, 17rem);
+  aspect-ratio: 0.62;
+  border: 1px solid rgba(60, 86, 61, 0.12);
+  border-radius: 100% 0 100% 0;
+  content: "";
+  pointer-events: none;
+}
+
+.page-wrapper::before {
+  top: 23rem;
+  left: -8rem;
+  background:
+    linear-gradient(68deg, transparent 49.5%, rgba(60, 86, 61, 0.12) 49.8% 50.2%, transparent 50.5%),
+    repeating-linear-gradient(112deg, transparent 0 1.6rem, rgba(60, 86, 61, 0.08) 1.62rem 1.67rem, transparent 1.7rem 2.7rem);
+  transform: rotate(-38deg);
+}
+
+.page-wrapper::after {
+  right: -8rem;
+  bottom: 13rem;
+  background:
+    linear-gradient(68deg, transparent 49.5%, rgba(60, 86, 61, 0.12) 49.8% 50.2%, transparent 50.5%),
+    repeating-linear-gradient(112deg, transparent 0 1.6rem, rgba(60, 86, 61, 0.08) 1.62rem 1.67rem, transparent 1.7rem 2.7rem);
+  transform: rotate(38deg);
+}
+
+/* ANIMATIONS
+   The hero decoration barely drifts, using transform only (usually inexpensive
+   for browsers to animate). All text is fully visible when JavaScript is off. */
+@keyframes leaf-drift {
+  0%,
+  100% {
+    transform: rotate(35deg) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: rotate(38deg) translate3d(-5px, 7px, 0);
+  }
+}
+
+@keyframes sunlight-breathe {
+  0%,
+  100% {
+    opacity: 0.78;
+    transform: rotate(-8deg) translate3d(0, 0, 0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: rotate(-6deg) translate3d(0.5%, -0.4%, 0);
+  }
+}
+
+@keyframes firefly-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate3d(0, 0, 0) scale(0.85);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate3d(-4px, 5px, 0) scale(1);
+  }
+}
+
+@keyframes branch-sway {
+  0%,
+  100% {
+    transform: rotate(28deg) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: rotate(25deg) translate3d(-3px, 5px, 0);
+  }
+}
+
+.intro > header::after {
+  animation: leaf-drift 18s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* JavaScript adds .has-js only when the optional enhancement is active. The
+   IntersectionObserver adds .is-visible as content enters the viewport. */
+.has-js .intro .summary,
+.has-js .intro .preamble,
+.has-js .supporting > div,
+.has-js .sidebar .wrapper > div {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 800ms var(--ease-garden), transform 800ms var(--ease-garden);
+}
+
+.has-js .is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ACCESSIBILITY
+   Reduced-motion mode removes both the perpetual decoration drift and
+   scroll-reveal movement. Content remains immediately available either way. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .has-js .intro .summary,
+  .has-js .intro .preamble,
+  .has-js .supporting > div,
+  .has-js .sidebar .wrapper > div {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* RESPONSIVE DESIGN
+   On narrower screens the sidebar returns to normal document flow so it does
+   not occupy precious viewport space or cover long content while scrolling. */
+@media (max-width: 900px) {
+  .page-wrapper {
+    grid-template-columns: minmax(0, 1fr) minmax(13rem, 16rem);
+    gap: 1.5rem;
+    width: min(var(--content-width), calc(100% - 2rem));
+  }
+
+  .sidebar .wrapper {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .page-wrapper {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "intro"
+      "support"
+      "sidebar";
+    width: min(48rem, calc(100% - 1.25rem));
+    gap: 1.25rem;
+    padding-top: 0.65rem;
+  }
+
+  .sidebar {
+    position: static;
+  }
+
+  .intro > header {
+    min-height: 32rem;
+    padding: clamp(2rem, 8vw, 4rem);
+  }
+
+  .intro > header h1 {
+    font-size: clamp(4.1rem, 16vw, 7rem);
+  }
+
+  .intro > header::after {
+    top: 9%;
+    right: -7%;
+    width: 12rem;
+  }
+
+  .summary {
+    width: calc(100% - 1rem);
+    margin-top: -2rem;
+  }
+
+  .preamble {
+    margin-top: 3rem;
+  }
+
+  .supporting > div:nth-child(even),
+  .supporting > div:nth-child(odd) {
+    margin-inline: 0;
+  }
+}
+
+@media (max-width: 430px) {
+  body {
+    font-size: 0.96rem;
+  }
+
+  .intro > header {
+    min-height: 28rem;
+    border-radius: 2.6rem 0.7rem 2.6rem 0.7rem;
+  }
+
+  .intro > header h1 {
+    font-size: clamp(3.7rem, 18vw, 5rem);
+  }
+
+  .intro > header h2 {
+    max-width: 14ch;
+    margin-top: 1.25rem;
+  }
+
+  .summary {
+    width: calc(100% - 0.5rem);
+    padding: 1.35rem;
+  }
+
+  .preamble,
+  .supporting > div:not(.extra1):not(.extra2):not(.extra3):not(.extra4):not(.extra5):not(.extra6) {
+    padding: 1.4rem;
+  }
+}
